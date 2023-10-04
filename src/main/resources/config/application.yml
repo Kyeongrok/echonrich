@@ -1,0 +1,77 @@
+#--------------------------
+# server
+#--------------------------
+server:
+  shutdown: graceful  # graceful shutdown 적용
+  servlet:
+    encoding:
+      charset: utf-8
+      force: true
+
+#--------------------------
+# spring
+#--------------------------
+spring:
+  datasource:
+    url: localhost
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: 1123
+    jpa:
+      open-in-view: true
+      hibernate:
+        #ddl-auto: none
+        ddl-auto: update # 개발 환경.
+        naming:
+          physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        use-new-id-generator-mappings: false
+      show-sql: true
+      properties:
+        hibernate.format_sql: true
+        dialect: org.hibernate.dialect.MySQL8InnoDBDialect
+
+  application:
+    name: EcoAndRich
+  profiles:
+    active: dev
+  banner:
+    charset: UTF-8
+    location: "classpath:config/app-banner.txt"
+  lifecycle:
+    timeout-per-shutdown-phase: 35s # graceful shutdown 유예시간 설정 (default 30s)
+#--------------------------
+# swagger info
+#--------------------------
+springdoc:
+  default-consumes-media-type: application/json
+  default-produces-media-type: application/json
+  api-docs:
+    groups:
+      enabled: true
+  swagger-ui:
+    operations-sorter: alpha # alpha(알파벳 오름차순), method(HTTP메소드순)
+    tags-sorter: alpha # 태그 정렬 기준
+    path: /swagger-ui.html # html 문서 접속 경로
+    disable-swagger-default-url: true
+    display-query-params-without-oauth2: true
+    doc-expansion: none # tag, operation 펼치는 방식
+  paths-to-match:
+    - /**
+#--------------------------
+# swagger info
+#--------------------------
+
+api:
+  url: https://apis.data.go.kr/6300000/mdlcnst/getmdlcnst
+  key: gjOmV0s%2F0TwcItL7NefmNExj%2F1OZAbOg1mE9D5yPqh8HqqG42hxwchbpM7ncdDz%2BAEyuljySKLznnUeCUxPDug%3D%3D
+  #key: gjOmV0s/0TwcItL7NefmNExj/1OZAbOg1mE9D5yPqh8HqqG42hxwchbpM7ncdDz+AEyuljySKLznnUeCUxPDug==
+  ### 위 key가 인코딩 아래가 디코딩, 디코딩을 사용해야한다.
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
